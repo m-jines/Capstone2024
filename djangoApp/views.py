@@ -10,6 +10,7 @@ from .models import *
 from .forms import *
 from .filters import *
 import logging
+from django.core.cache import cache
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -23,20 +24,25 @@ def serve_presigned_media(request, file_key):
     logging.debug(f'Received file key: {file_key}')
     print("Generating pre-signed URL for key:", file_key)
     """Serve a pre-signed URL for authenticated users."""
+    cache_key = f'presigned_url_{file_key}'
+    presigned_url = cache.get(cache_key)
 
-    s3_client = boto3.client('s3', 
+    if not presigned_url:
+       
+      s3_client = boto3.client('s3', 
                               region_name=settings.AWS_S3_REGION_NAME,
                               aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                               aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY
-    )
+      )
     
-    try:
-        presigned_url = s3_client.generate_presigned_url('get_object',
+      try:
+         presigned_url = s3_client.generate_presigned_url('get_object',
                                                          Params={'Bucket': settings.AWS_STORAGE_BUCKET_NAME,
                                                                  'Key': file_key},
-                                                         ExpiresIn=3600)  
-        logging.debug(f'Generated presigned URL: {presigned_url}')
-    except Exception as e:
+                                                         ExpiresIn=3600)
+         cache.set(cache_key, presigned_url, timeout=3500) 
+         logging.debug(f'Generated presigned URL: {presigned_url}')
+      except Exception as e:
         logging.error(f'Error generating presigned URL: {e}')
         # Log the error
         raise Http404("Error generating URL")
