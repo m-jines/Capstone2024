@@ -1,0 +1,104 @@
+{% extends 'djangoApp/main.html' %}
+
+{% block content %}
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <h5>Your Journal Entries</h5>
+        <hr>
+        <div class = "card card-body">
+            <a class="btn btn-secondary btn-sm btn-block" href ="{% url 'journalform' %}">Create Journal Entry
+            </a>
+            <table class="table table-sm">
+                <tr>
+                    <th>Training Date</th>
+                    <th>Techniques</th>
+                    <th>Notes</th>
+                    <th>Duration (mins)</th>
+                    <th>Media</th>
+                    <th>Update</th>
+                    <th>Remove</th>
+                </tr>
+                
+                {% for i in journalentry %}
+                    <tr>
+                        <td>{{i.Training_Date}}</td>
+                        <td>{{i.Techniques}}</td>
+                        <td>{{i.Notes}}</td>
+                        <td>{{i.Duration}}</td>
+                        <td>
+                            {% if i.image %}
+                                <a href="{% url 'serve_presigned_media' file_key=i.image.name %}" target="_blank">Image</a>
+                            {% endif %}
+                            {% if i.image and i.video %} | {% endif %} <!-- separator if both image and video exist -->
+                            {% if i.video %}
+                                <a href="{% url 'serve_presigned_media' file_key=i.video.name %}" target="_blank">Video</a>
+                            {% endif %}
+                        </td>
+                        
+                        <td><a class="btn btn-secondary btn-sm btn-danger" href="{% url 'updatejournal' i.id %}">Update</a></td>
+                        <td><a class="btn btn-secondary btn-sm btn-danger" href="{% url 'deletejournal' i.id %}">Remove</a></td>
+                    </tr>
+
+                {% endfor %}
+
+            </table>
+        </div>
+        </div>
+    </div>
+</div>
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-body">
+            <form style="color:black" method="get">
+                <!-- Custom date widget for Training Date at the desired location -->
+                <div class="form-group">
+                    <label for="Training_Date">Training Date:</label>
+                    <input type="date" id="Training_Date" name="Training_Date" class="form-control" value="{{ request.GET.Training_Date }}" placeholder="Training Date">
+                </div>
+
+                      <!-- Duration minimum search -->
+                      {% if jFilter.form.Duration_min %}
+                      <div class="form-group">
+                          {{ jFilter.form.Duration_min.label_tag }}
+                          {{ jFilter.form.Duration_min }}
+                      </div>
+                      {% endif %}
+      
+                      <!-- Duration maximum search -->
+                      {% if jFilter.form.Duration_max %}
+                      <div class="form-group">
+                          {{ jFilter.form.Duration_max.label_tag }}
+                          {{ jFilter.form.Duration_max }}
+                      </div>
+                      {% endif %}
+
+                <!-- Manually render the Techniques filter field -->
+                {% if jFilter.form.Techniques %}
+                <div class="form-group">
+                    {{ jFilter.form.Techniques.label_tag }}
+                    {{ jFilter.form.Techniques }}
+                </div>
+                {% endif %}
+
+                <!-- Manually render the Notes filter field -->
+                {% if jFilter.form.Notes %}
+                <div class="form-group">
+                    {{ jFilter.form.Notes.label_tag }}
+                    {{ jFilter.form.Notes }}
+                </div>
+                {% endif %}
+                
+                <!-- Search button -->
+                <button class="btn btn-secondary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+       

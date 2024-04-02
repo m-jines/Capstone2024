@@ -1,0 +1,27 @@
+{% extends 'djangoApp/main.html' %}
+
+{% block content %}
+<style>
+    .maincontent{
+        margin: 0 auto;
+        max-width: 800px;
+        padding: 20px;
+        text-align: center;
+    }
+</style>
+<body>
+    <div class = "maincontent">
+        <h1>Welcome to BJJ Journal</h1>
+        <p>The online platform created specifically for Brazilian Jiu Jitsu enthusiasts. Whether you're a seasoned practitioner, a dedicated coach, or simply someone looking to dive into the world of BJJ, we're here to support your journey.</p>
+        <a href="{% url 'registerpage' %}" class="btn btn-primary">Join Today!</a>
+
+        <h2>Record and Organize Your Training</h2>
+        <p>At BJJ Journal, we understand the importance of keeping track of your training progress. That's why we've developed an intuitive training log feature that allows you to record and organize your training sessions effortlessly. From drilling techniques to live sparring, you can document every step of your training and gain valuable insights into your development over time.</p>
+    
+        <h2>Build Your Technique Library</h2>
+        <p>But that's not all—our platform also provides a dedicated technique library where you can build your own collection of BJJ techniques. Whether it's a fundamental sweep, a sneaky submission, or a complex transition, you can store and categorize your favorite techniques in one place. With the ability to add detailed descriptions and even attach videos, you'll have a handy resource to refer to whenever you need it.</p>
+    </div>
+</body>
+{% endblock %}
+
+
