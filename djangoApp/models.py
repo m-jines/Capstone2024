@@ -15,8 +15,8 @@ class TrainingLogEntry(models.Model):
     image = models.ImageField(upload_to='training_log_images/', blank=True, null=True)
     video = models.FileField(upload_to='training_log_videos/', blank=True, null=True)  # Video field added
     def __str__(self):
-        return self.Training_Date
-    
+        return self.Training_Date.strftime('%Y-%m-%d') if self.Training_Date else 'Unknown Training Date'
+
 class TechniqueLibraryEntry(models.Model):
     STATUS = (
         ('Needs Improvement', 'Needs Improvement'),
