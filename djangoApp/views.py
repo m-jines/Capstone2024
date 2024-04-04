@@ -179,6 +179,46 @@ def deletetechnique(request, pk):
    context = {'techniqueentry': techniqueentry}
    return render (request, 'djangoApp/deletetechnique.html', context)
 
+@login_required(login_url='loginpage')
+def techniqueseries(request):
+    current_user = request.user
+    series_entries = TechniqueSeriesEntry.objects.filter(user=current_user)
+    context = {'series_entries': series_entries}
+    return render(request, 'djangoApp/techniqueseries.html', context)
 
+@login_required(login_url='loginpage')
+def techniqueseriesform(request):
+    if request.method == 'POST':
+        form = TechniqueSeriesForm(request.POST, request.FILES)
+        if form.is_valid():
+            series_entry = form.save(commit=False)
+            series_entry.user = request.user
+            series_entry.save()
+            form.save_m2m()  # Save the form's many-to-many data
+            return redirect('techniqueseries')
+    else:
+        form = TechniqueSeriesForm()
+    context = {'jform': form}
+    return render(request, 'djangoApp/techniqueseriesform.html', context)
 
+@login_required(login_url='loginpage')
+def updatetechniqueseries(request, pk):
+    series_entry = TechniqueSeriesEntry.objects.get(id=pk, user=request.user)
+    if request.method == 'POST':
+        form = TechniqueSeriesForm(request.POST, request.FILES, instance=series_entry)
+        if form.is_valid():
+            form.save()
+            return redirect('techniqueseries')
+    else:
+        form = TechniqueSeriesForm(instance=series_entry)
+    context = {'jform': form}
+    return render(request, 'djangoApp/techniqueseriesform.html', context)
 
+@login_required(login_url='loginpage')
+def deletetechniqueseries(request, pk):
+    series_entry = TechniqueSeriesEntry.objects.get(id=pk, user=request.user)
+    if request.method == 'POST':
+        series_entry.delete()
+        return redirect('techniqueseries')
+    context = {'series_entry': series_entry}
+    return render(request, 'djangoApp/deletetechniqueseries.html', context)

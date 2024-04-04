@@ -1,7 +1,7 @@
-from django.forms import ModelForm, DateInput, NumberInput, FileInput
+from django import forms
+from django.forms import ModelForm, DateInput, NumberInput, FileInput, ModelMultipleChoiceField, Textarea, TextInput
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django import forms
 from .models import *
 
 #from .models import Order
@@ -57,4 +57,20 @@ class TechniqueForm(ModelForm):
         model = TechniqueLibraryEntry
         fields = ['Technique_Name', 'Description','Status', 'image', 'video']
 
+class TechniqueSeriesForm(ModelForm):
+    techniques = ModelMultipleChoiceField(
+        queryset=TechniqueLibraryEntry.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False 
+    )
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        self.fields['SeriesName'].widget = TextInput(attrs={'class': 'form-control'})
+        self.fields['Description'].widget = Textarea(attrs={'class': 'form-control', 'rows': 3})
+        self.fields['Techniques'].widget.attrs.update({'class': 'form-control'})
+
+    class Meta:
+        model = TechniqueSeriesEntry
+        fields = ['SeriesName', 'Description', 'Techniques']

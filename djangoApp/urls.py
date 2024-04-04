@@ -16,5 +16,9 @@ urlpatterns = [
         path('updatetechnique/<str:pk>/', views.updatetechnique, name='updatetechnique'),
         path('deletejournal/<str:pk>/', views.deletejournal, name='deletejournal'),
         path('deletetechnique/<str:pk>/', views.deletetechnique, name='deletetechnique'),
+        path('techniqueseries/', views.techniqueseries, name ='techniqueseries'),
+        path('techniqueseriesform/', views.techniqueseriesform, name= 'techniqueseriesform'),
+        path('updatetechniqueseries/<str:pk>/', views.updatetechniqueseries, name= 'updatetechniqueseries'),
+        path('deletetechniqueseries/<str:pk>/', views.deletetechniqueseries, name= 'deletetechniqueseries')
 ]
 

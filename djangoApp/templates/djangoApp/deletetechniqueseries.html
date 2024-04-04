@@ -1,0 +1,22 @@
+{% extends 'djangoApp/home.html' %}
+
+{% block content %}
+
+<br>
+<div class="row">
+    <div class="col-md-6">
+        <div class = "card card-body">
+            
+            <p style ="color:black;">Are you sure you want to delete "{{techniqueseriesentry}}"?</p>
+            <form action ="{% url 'deletetechniqueseries' series_entry.id %}" method="POST">
+
+                {% csrf_token %}
+                <a class="btn btn-warning" href="{% url 'techniqueseries' %}">Cancel</a>
+
+                <input class="btn btn-danger" type="submit" name="Confirm">
+            </form>
+        </div>
+    </div>
+</div>    
+
+{% endblock %}

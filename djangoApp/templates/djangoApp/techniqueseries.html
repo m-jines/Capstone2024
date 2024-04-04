@@ -1,0 +1,98 @@
+{% extends 'djangoApp/main.html' %}
+
+{% block content %}
+
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <h5>Your Series</h5>
+        <hr>
+        <div class = "card card-body">
+            <a class="btn btn-secondary btn-sm btn-block" href ="{% url 'techniqueseriesform' %}">Create Series
+            </a>
+            <table class="table table-sm">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Techniques</th>
+                    <th>Update</th>
+                    <th>Remove</th>
+                </tr>
+                
+                {% for i in series_entries %}
+                    <tr>
+                        <td>{{i.SeriesName}}</td>
+                        <td>{{i.Description}}</td>
+                        <td>
+                            <ul style="list-style-type:none; padding: 0;">
+                                {% for technique in i.Techniques.all %}
+                                    <li>{{ technique.Technique_Name }}</li>
+                                {% empty %}
+                                    <li>No techniques added.</li>
+                                {% endfor %}
+                            </ul>
+                        </td>    
+                        <td><a class="btn btn-secondary btn-sm" href="{% url 'updatetechniqueseries' i.id %}">Update</a></td>
+                        <td><a class="btn btn-danger btn-sm" href="{% url 'deletetechniqueseries' i.id %}">Remove</a></td>
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+        </div>
+    </div>
+</div>
+<!--START EDITING HERE FOR SEARCH FILTERS-->
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-body">
+            <form style="color:black" method="get">
+                <!-- Custom date widget for Training Date at the desired location -->
+                <div class="form-group">
+                    <label for="Training_Date">Training Date:</label>
+                    <input type="date" id="Training_Date" name="Training_Date" class="form-control" value="{{ request.GET.Training_Date }}" placeholder="Training Date">
+                </div>
+
+                      <!-- Duration minimum search -->
+                      {% if jFilter.form.Duration_min %}
+                      <div class="form-group">
+                          {{ jFilter.form.Duration_min.label_tag }}
+                          {{ jFilter.form.Duration_min }}
+                      </div>
+                      {% endif %}
+      
+                      <!-- Duration maximum search -->
+                      {% if jFilter.form.Duration_max %}
+                      <div class="form-group">
+                          {{ jFilter.form.Duration_max.label_tag }}
+                          {{ jFilter.form.Duration_max }}
+                      </div>
+                      {% endif %}
+
+                <!-- Manually render the Techniques filter field -->
+                {% if jFilter.form.Techniques %}
+                <div class="form-group">
+                    {{ jFilter.form.Techniques.label_tag }}
+                    {{ jFilter.form.Techniques }}
+                </div>
+                {% endif %}
+
+                <!-- Manually render the Notes filter field -->
+                {% if jFilter.form.Notes %}
+                <div class="form-group">
+                    {{ jFilter.form.Notes.label_tag }}
+                    {{ jFilter.form.Notes }}
+                </div>
+                {% endif %}
+                
+                <!-- Search button -->
+                <button class="btn btn-secondary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+       
