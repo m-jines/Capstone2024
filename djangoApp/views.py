@@ -2,7 +2,7 @@
 import boto3
 from django.conf import settings
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -194,7 +194,16 @@ def techniqueseriesform(request):
             series_entry = form.save(commit=False)
             series_entry.user = request.user
             series_entry.save()
-            form.save_m2m()  # Save the form's many-to-many data
+            
+            # Assume 'techniques_order' is a list of technique IDs in the order they were selected
+            techniques_order = request.POST.getlist('techniques')  # Adjust based on your form field
+            TechniqueSeriesLinking.objects.filter(TechniqueSeriesEntry=series_entry).delete()  # Clear existing links
+            for tech_id in techniques_order:
+                TechniqueSeriesLinking.objects.create(
+                    TechniqueSeriesEntry=series_entry,
+                    TechniqueLibraryEntry_id=tech_id,
+                )
+                
             return redirect('techniqueseries')
     else:
         form = TechniqueSeriesForm()
@@ -203,14 +212,29 @@ def techniqueseriesform(request):
 
 @login_required(login_url='loginpage')
 def updatetechniqueseries(request, pk):
-    series_entry = TechniqueSeriesEntry.objects.get(id=pk, user=request.user)
+    series_entry = get_object_or_404(TechniqueSeriesEntry, id=pk, user=request.user)
     if request.method == 'POST':
         form = TechniqueSeriesForm(request.POST, request.FILES, instance=series_entry)
         if form.is_valid():
-            form.save()
+            saved_series_entry = form.save(commit=False)
+            saved_series_entry.save()
+
+            # Handle the techniques_order
+            techniques_order = request.POST.getlist('techniques')
+            TechniqueSeriesLinking.objects.filter(TechniqueSeriesEntry=saved_series_entry).delete()  # Clear existing links
+
+            # Re-create links with possibly updated selections
+            for tech_id in techniques_order:
+                TechniqueSeriesLinking.objects.create(
+                    TechniqueSeriesEntry=saved_series_entry,
+                    TechniqueLibraryEntry_id=tech_id,
+                )
+
+            # No need to call form.save_m2m() if you're manually handling the M2M relationship
             return redirect('techniqueseries')
     else:
         form = TechniqueSeriesForm(instance=series_entry)
+
     context = {'jform': form}
     return render(request, 'djangoApp/techniqueseriesform.html', context)
 

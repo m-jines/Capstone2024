@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm, DateInput, NumberInput, FileInput, ModelMultipleChoiceField, Textarea, TextInput
+from django.forms import ModelForm, DateInput, NumberInput, FileInput, ModelMultipleChoiceField, Textarea, TextInput, CheckboxSelectMultiple
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import *
@@ -60,16 +60,16 @@ class TechniqueForm(ModelForm):
 class TechniqueSeriesForm(ModelForm):
     techniques = ModelMultipleChoiceField(
         queryset=TechniqueLibraryEntry.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
+        widget=CheckboxSelectMultiple,  # Directly use the widget without additional attrs
         required=False 
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         
+        # Configure other fields as needed
         self.fields['SeriesName'].widget = TextInput(attrs={'class': 'form-control'})
         self.fields['Description'].widget = Textarea(attrs={'class': 'form-control', 'rows': 3})
-        self.fields['Techniques'].widget.attrs.update({'class': 'form-control'})
 
     class Meta:
         model = TechniqueSeriesEntry
