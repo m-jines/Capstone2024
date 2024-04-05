@@ -8,9 +8,32 @@
     {{ jform.SeriesName.label_tag }} {{ jform.SeriesName }}
     {{ jform.Description.label_tag }} {{ jform.Description }}
     {{ jform.techniques.label_tag }} {{ jform.techniques }}
-    <input type="submit" name="Submit">
+    <input type="hidden" id="techniques_order" name="techniques_order" value="">
+    <input type="submit" value="Submit">
 </form>
-
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Select all checkboxes with the name 'techniques' (adjust if necessary)
+        const checkboxes = document.querySelectorAll('input[name="techniques"]');
+        const orderField = document.querySelector('#techniques_order');
+        let selectedOrder = []; // Array to track the order of selection
+    
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    // Add the checkbox's value to the array if checked
+                    selectedOrder.push(this.value);
+                } else {
+                    // Remove the checkbox's value from the array if unchecked
+                    selectedOrder = selectedOrder.filter(value => value !== this.value);
+                }
+                // Update the hidden input's value
+                orderField.value = selectedOrder.join(',');
+            });
+        });
+    });
+    </script>
+    
             
 
 {% endblock %}

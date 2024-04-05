@@ -51,8 +51,9 @@ class TechniqueSeriesEntry(models.Model):
 class TechniqueSeriesLinking(models.Model):
     TechniqueSeriesEntry = models.ForeignKey('TechniqueSeriesEntry', on_delete=models.CASCADE)
     TechniqueLibraryEntry = models.ForeignKey('TechniqueLibraryEntry', on_delete=models.CASCADE)
-
+    order = models.PositiveIntegerField(default=0)
     class Meta:
+        ordering = ['order']
         unique_together = ('TechniqueSeriesEntry', 'TechniqueLibraryEntry')
 
     

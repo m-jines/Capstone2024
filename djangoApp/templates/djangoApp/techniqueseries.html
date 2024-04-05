@@ -26,10 +26,10 @@
                         <td>
                             <ul style="list-style-type:none; padding: 0;">
                                 {% for link in i.techniqueserieslinking_set.all %}
-                <li>{{ link.TechniqueLibraryEntry.Technique_Name }}</li>  <!-- Adjust field name as necessary -->
-            {% empty %}
-                <li>No techniques added.</li>
-            {% endfor %}
+                                    <li>{{ link.TechniqueLibraryEntry.Technique_Name }}</li>  
+                                {% empty %}
+                                    <li>No techniques added.</li>
+                                {% endfor %}
                             </ul>
                         </td>    
                         <td><a class="btn btn-secondary btn-sm" href="{% url 'updatetechniqueseries' i.id %}">Update</a></td>

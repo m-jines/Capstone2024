@@ -194,19 +194,24 @@ def techniqueseriesform(request):
             series_entry = form.save(commit=False)
             series_entry.user = request.user
             series_entry.save()
-            
-            # Assume 'techniques_order' is a list of technique IDs in the order they were selected
-            techniques_order = request.POST.getlist('techniques')  # Adjust based on your form field
-            TechniqueSeriesLinking.objects.filter(TechniqueSeriesEntry=series_entry).delete()  # Clear existing links
-            for tech_id in techniques_order:
+
+            # Extract and parse the ordered list of technique IDs
+            techniques_order = request.POST.get('techniques_order', '')
+            ordered_technique_ids = [int(tid) for tid in techniques_order.split(',') if tid.isdigit()]
+
+            # Clear existing TechniqueSeriesLinking and re-create them in order
+            TechniqueSeriesLinking.objects.filter(TechniqueSeriesEntry=series_entry).delete()
+            for index, tech_id in enumerate(ordered_technique_ids, start=1):
                 TechniqueSeriesLinking.objects.create(
                     TechniqueSeriesEntry=series_entry,
                     TechniqueLibraryEntry_id=tech_id,
+                    order=index  
                 )
-                
+
             return redirect('techniqueseries')
     else:
         form = TechniqueSeriesForm()
+
     context = {'jform': form}
     return render(request, 'djangoApp/techniqueseriesform.html', context)
 
@@ -218,19 +223,17 @@ def updatetechniqueseries(request, pk):
         if form.is_valid():
             saved_series_entry = form.save(commit=False)
             saved_series_entry.save()
+            techniques_order = request.POST.get('techniques_order', '')
+            ordered_technique_ids = [int(tid) for tid in techniques_order.split(',') if tid.isdigit()]
 
-            # Handle the techniques_order
-            techniques_order = request.POST.getlist('techniques')
-            TechniqueSeriesLinking.objects.filter(TechniqueSeriesEntry=saved_series_entry).delete()  # Clear existing links
-
-            # Re-create links with possibly updated selections
-            for tech_id in techniques_order:
+            TechniqueSeriesLinking.objects.filter(TechniqueSeriesEntry=saved_series_entry).delete()
+            for index, tech_id in enumerate(ordered_technique_ids, start=1):
                 TechniqueSeriesLinking.objects.create(
                     TechniqueSeriesEntry=saved_series_entry,
                     TechniqueLibraryEntry_id=tech_id,
+                    order=index
                 )
 
-            # No need to call form.save_m2m() if you're manually handling the M2M relationship
             return redirect('techniqueseries')
     else:
         form = TechniqueSeriesForm(instance=series_entry)
