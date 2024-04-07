@@ -7,6 +7,9 @@
     {% csrf_token %}
     {{ jform.SeriesName.label_tag }} {{ jform.SeriesName }}
     {{ jform.Description.label_tag }} {{ jform.Description }}
+    <div>
+        <strong>Note:</strong> Please select techniques in the order you wish them to be considered.
+    </div>
     {{ jform.techniques.label_tag }} {{ jform.techniques }}
     <input type="hidden" id="techniques_order" name="techniques_order" value="">
     <input type="submit" value="Submit">

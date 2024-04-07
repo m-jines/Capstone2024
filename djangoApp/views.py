@@ -182,8 +182,13 @@ def deletetechnique(request, pk):
 @login_required(login_url='loginpage')
 def techniqueseries(request):
     current_user = request.user
-    series_entries = TechniqueSeriesEntry.objects.filter(user=current_user)
-    context = {'series_entries': series_entries}
+    series_entries_queryset = TechniqueSeriesEntry.objects.filter(user=current_user)
+    tFilter = TechniqueSeriesFilter(request.GET, queryset=series_entries_queryset)
+
+    context = {
+        'series_entries': tFilter.qs,  # Use the filtered queryset here
+        'tFilter': tFilter,
+    }
     return render(request, 'djangoApp/techniqueseries.html', context)
 
 @login_required(login_url='loginpage')

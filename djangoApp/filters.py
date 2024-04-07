@@ -23,3 +23,23 @@ class TechniqueLibraryFilter(django_filters.FilterSet):
     class Meta:
         model=TechniqueLibraryEntry
         fields = ['Technique_Name', 'Description', 'Status']
+
+class TechniqueSeriesFilter(django_filters.FilterSet):
+    SeriesName = CharFilter(field_name='SeriesName', lookup_expr='icontains', label='Series Name')
+    Description = CharFilter(field_name='Description', lookup_expr='icontains', label='Description')
+    # Placeholder for technique-based filtering, actual method to be defined below
+    Techniques = CharFilter(method='filter_by_technique', label='Techniques')
+
+    class Meta:
+        model = TechniqueSeriesEntry
+        fields = ['SeriesName', 'Description']
+
+    def filter_by_technique(self, queryset, name, value):
+        """
+        This method will filter the TechniqueSeriesEntry queryset based on technique name.
+        """
+        if value:
+            return queryset.filter(
+                techniqueserieslinking__TechniqueLibraryEntry__Technique_Name__icontains=value
+            ).distinct()
+        return queryset
