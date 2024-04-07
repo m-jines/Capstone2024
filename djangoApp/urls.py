@@ -19,6 +19,7 @@ urlpatterns = [
         path('techniqueseries/', views.techniqueseries, name ='techniqueseries'),
         path('techniqueseriesform/', views.techniqueseriesform, name= 'techniqueseriesform'),
         path('updatetechniqueseries/<str:pk>/', views.updatetechniqueseries, name= 'updatetechniqueseries'),
-        path('deletetechniqueseries/<str:pk>/', views.deletetechniqueseries, name= 'deletetechniqueseries')
+        path('deletetechniqueseries/<str:pk>/', views.deletetechniqueseries, name= 'deletetechniqueseries'),
+        path('stats/', views.stats, name='stats')
 ]
 

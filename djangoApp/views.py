@@ -1,5 +1,7 @@
 #views.py
+from itertools import count
 import boto3
+from django.db.models import Sum, Count
 from django.conf import settings
 from django.http import Http404
 from django.shortcuts import get_object_or_404, render, redirect
@@ -254,3 +256,22 @@ def deletetechniqueseries(request, pk):
         return redirect('techniqueseries')
     context = {'series_entry': series_entry}
     return render(request, 'djangoApp/deletetechniqueseries.html', context)
+
+@login_required(login_url='loginpage')
+def stats(request):
+    total_duration_minutes = TrainingLogEntry.objects.aggregate(Sum('Duration'))['Duration__sum'] or 0
+    total_hours, total_minutes = divmod(total_duration_minutes, 60)
+    total_days, total_hours = divmod(total_hours, 24)
+
+    # Prepare context for template
+    context = {
+        'total_days': total_days,
+        'total_hours': total_hours,
+        'total_minutes': total_minutes,
+    }
+
+    # Technique proficiency counts for the pie chart
+    proficiency_counts = TechniqueLibraryEntry.objects.values('Status').annotate(count=Count('Status'))
+    context['proficiency_counts'] = proficiency_counts
+
+    return render(request, 'djangoApp/stats.html', context)
