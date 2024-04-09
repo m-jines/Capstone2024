@@ -1,12 +1,35 @@
 {% extends 'djangoApp/main.html' %}
 
 {% block content %}
+<style>
+    body {
+        background-color: rgb(210, 202, 202);
+    }
+</style>
 
-<br>
 <div class="row">
     <div class="col-md-12">
         <h5>Your Series</h5>
-        <hr>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <!-- Button to toggle the visibility of the form -->
+        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
+            Search
+        </button>
+        <div class="collapse" id="searchForm">
+            <div class="card card-body">
+                <form style="color:black" method="get">
+        <div class="card card-body">
+            <form style="color:black" method="get">
+                {{ tFilter.form.as_p }}
+                <button class="btn btn-secondary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+    <hr>
         <div class="card card-body">
             <a class="btn btn-secondary btn-sm btn-block" href="{% url 'techniqueseriesform' %}">Create Series</a>
             <table class="table table-sm">
@@ -41,16 +64,7 @@
 </div>
 
 <br>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card card-body">
-            <form style="color:black" method="get">
-                {{ tFilter.form.as_p }}
-                <button class="btn btn-secondary" type="submit">Search</button>
-            </form>
-        </div>
-    </div>
-</div>
+
 
 {% endblock %}
 

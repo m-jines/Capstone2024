@@ -1,6 +1,12 @@
 {% extends 'djangoApp/main.html' %}
 
 {% block content %}
+<style>
+    body {
+        background-color: rgb(210, 202, 202);
+    }
+</style>
+
 <div>
     <h2>Total Training Time</h2>
     <p>{{ total_days }} days, {{ total_hours }} hours, and {{ total_minutes }} minutes</p>

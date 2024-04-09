@@ -1,10 +1,36 @@
 {% extends 'djangoApp/home.html' %}
 
 {% block content %}
-    <br>
+<style>
+    body {
+        background-color: rgb(210, 202, 202);
+    }
+</style>
 <div class="row">
     <div class="col-md-12">
         <h5>Your Technique Library</h5>
+    </div>
+    </div>
+
+<div class="row">
+    <div class="col-md-12">
+        <!-- Button to toggle the visibility of the form -->
+        <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
+            Search
+        </button>
+        <div class="collapse" id="searchForm">
+            <div class="card card-body">
+                <form style="color:black" method="get">
+        <div class="card card-body">
+            <form style="color:black" method="get">
+                {{tFilter.form}}
+            <button class="btn btn-secondary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <br>
         <hr>
         <div class = "card card-body">
             <a class="btn btn-secondary btn-sm btn-block" href ="{% url 'techniqueform' %}">Create New Technique
@@ -42,18 +68,6 @@
                 {% endfor %}
             </table>
         </div>
-        </div>
-    </div>
-</div>
-
-<br>
-<div class="row">
-    <div class="col-md-12">
-        <div class="card card-body">
-            <form style="color:black" method="get">
-                {{tFilter.form}}
-            <button class="btn btn-secondary" type="submit">Search</button>
-            </form>
         </div>
     </div>
 </div>
