@@ -196,7 +196,7 @@ def techniqueseries(request):
 @login_required(login_url='loginpage')
 def techniqueseriesform(request):
     if request.method == 'POST':
-        form = TechniqueSeriesForm(request.POST, request.FILES)
+        form = TechniqueSeriesForm(request.POST, request.FILES, user=request.user)
         if form.is_valid():
             series_entry = form.save(commit=False)
             series_entry.user = request.user
@@ -217,7 +217,7 @@ def techniqueseriesform(request):
 
             return redirect('techniqueseries')
     else:
-        form = TechniqueSeriesForm()
+        form = TechniqueSeriesForm(user=request.user)
 
     context = {'jform': form}
     return render(request, 'djangoApp/techniqueseriesform.html', context)
@@ -226,7 +226,7 @@ def techniqueseriesform(request):
 def updatetechniqueseries(request, pk):
     series_entry = get_object_or_404(TechniqueSeriesEntry, id=pk, user=request.user)
     if request.method == 'POST':
-        form = TechniqueSeriesForm(request.POST, request.FILES, instance=series_entry)
+        form = TechniqueSeriesForm(request.POST, request.FILES, instance=series_entry, user=request.user)
         if form.is_valid():
             saved_series_entry = form.save(commit=False)
             saved_series_entry.save()
@@ -243,7 +243,7 @@ def updatetechniqueseries(request, pk):
 
             return redirect('techniqueseries')
     else:
-        form = TechniqueSeriesForm(instance=series_entry)
+        form = TechniqueSeriesForm(instance=series_entry, user=request.user)
 
     context = {'jform': form}
     return render(request, 'djangoApp/techniqueseriesform.html', context)
@@ -259,7 +259,10 @@ def deletetechniqueseries(request, pk):
 
 @login_required(login_url='loginpage')
 def stats(request):
-    total_duration_minutes = TrainingLogEntry.objects.aggregate(Sum('Duration'))['Duration__sum'] or 0
+    user = request.user  # Get the current user
+
+    # Filter TrainingLogEntry by the current user and aggregate the duration
+    total_duration_minutes = TrainingLogEntry.objects.filter(user=user).aggregate(Sum('Duration'))['Duration__sum'] or 0
     total_hours, total_minutes = divmod(total_duration_minutes, 60)
     total_days, total_hours = divmod(total_hours, 24)
 
@@ -270,8 +273,8 @@ def stats(request):
         'total_minutes': total_minutes,
     }
 
-    # Technique proficiency counts for the pie chart
-    proficiency_counts = TechniqueLibraryEntry.objects.values('Status').annotate(count=Count('Status'))
+    # Filter TechniqueLibraryEntry by the current user and count proficiency status
+    proficiency_counts = TechniqueLibraryEntry.objects.filter(user=user).values('Status').annotate(count=Count('Status'))
     context['proficiency_counts'] = proficiency_counts
 
     return render(request, 'djangoApp/stats.html', context)

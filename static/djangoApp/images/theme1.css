@@ -1,0 +1,167 @@
+
+h1 {
+    font: "Oswald", sans-serif;
+    font-size: 60px;
+    font-weight: bold;
+}
+
+h2 {
+    font: "Oswald", sans-serif;
+    font-size: 24px;
+    font-weight:bold;
+    color: rgb(163, 40, 40);
+}
+
+h3 {
+    font-size: 20px;
+}
+
+h4 {
+    font-size: 16px;
+}
+
+.navbar-expand-lg {
+    font-family: "Oswald", sans-serif;
+    background-color: black;
+    color: white;
+}
+.navbar-brand .img-fluid  {
+    width: 500px; 
+    height: 100px; 
+}
+
+
+.nav-item{
+    font-size: 1.2em;
+    margin-right: 30px;
+}
+
+.dropdown-item{
+    font-size: 1.2em;
+}
+
+.nav-link{
+    color: white;
+}
+
+.nav-link-active{
+    color: white;
+}
+
+.navbar-nav .nav-link:hover {
+    color:rgb(163, 40, 40) !important; 
+}
+
+.navbar-nav .nav-link.active:hover, 
+.navbar-nav .nav-link:focus {
+    color: rgb(163, 40, 40) !important;
+}
+
+.dropdown-menu {
+    color: white;
+}
+
+.white-navbar-toggler-icon .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+body {
+    font-family: "Merriweather", serif;
+    color: black;
+}
+
+.btn-primary {
+    background-color: rgb(163, 40, 40);
+    
+}
+
+
+
+.position-relative {
+    position: relative;
+}
+
+.overlay-content {
+    position: absolute;
+    top: 50%;  /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset the position by half the width and height of the element */
+    width: 80%;
+    text-align: center;
+}
+.overlay-content h1 {
+    /* Base styles */
+    font-size:60px /* Example size, adjust as needed */
+     /* Spacing example */
+    /* Other base styles */
+}
+
+.overlay-content h2 {
+    /* Base styles */
+    font-size: 24px; /* Example size, adjust as needed */
+     /* Spacing example */
+    /* Other base styles */
+}
+
+.no-padding-margin {
+    padding: 0;
+    margin: 0;
+}
+
+
+.carousel-item img {
+    object-fit: cover; 
+    width: 100%;
+    height: 100%;
+}
+
+.black-background {
+    background-color:black;
+}
+
+.grey-background {
+    background-color: rgb(228, 218, 218);
+}
+
+.overlay-img .img-fluid {
+    width: 273.06px; 
+    height: 110px;
+}
+
+@media (max-width: 768px) {
+    .carousel-item {
+        height: 250px; 
+    }
+}
+
+/* Media queries for content overlayed on the home image */
+
+/* medium devices */
+@media (max-width: 992px) {
+    .overlay-content h1 {
+        font-size: 48px; 
+    }
+    .overlay-content h2 {
+        font-size: 20px;
+    }
+}
+
+/* Small devices */
+@media (max-width: 768px) {
+    .overlay-content h1 {
+        font-size: 36px; 
+    }
+    .overlay-content h2 {
+        font-size: 18px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 576px) {
+    .overlay-content h1 {
+        font-size: 30px; 
+    }
+    .overlay-content h2 {
+        font-size: 16px;
+    }
+}

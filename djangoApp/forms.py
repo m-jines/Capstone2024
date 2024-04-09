@@ -59,18 +59,24 @@ class TechniqueForm(ModelForm):
 
 class TechniqueSeriesForm(ModelForm):
     techniques = ModelMultipleChoiceField(
-        queryset=TechniqueLibraryEntry.objects.all(),
+        queryset=TechniqueLibraryEntry.objects.none(),  # Initially set to none
         widget=CheckboxSelectMultiple,  # Directly use the widget without additional attrs
         required=False 
     )
 
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
+        user = kwargs.pop('user', None)  # Extract the user from kwargs
+        super(TechniqueSeriesForm, self).__init__(*args, **kwargs)
+
         # Configure other fields as needed
         self.fields['SeriesName'].widget = TextInput(attrs={'class': 'form-control'})
         self.fields['Description'].widget = Textarea(attrs={'class': 'form-control', 'rows': 3})
 
+        # If a user is provided, filter the queryset for the `techniques` field
+        if user:
+            self.fields['techniques'].queryset = TechniqueLibraryEntry.objects.filter(user=user)
+
     class Meta:
         model = TechniqueSeriesEntry
         fields = ['SeriesName', 'Description', 'Techniques']
+
