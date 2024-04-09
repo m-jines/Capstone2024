@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <head>
     <title>BJJ Journal</title>
+
+    <link rel="icon" type="image/x-icon" href="{% static 'djangoApp/images/BJJlogo2.png' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="{% static 'djangoApp/images/theme1.css' %}">
@@ -16,7 +18,7 @@
       <div class="row w-100 align-items-center">
         <!-- LOGO FOR NAV BAR -->
         <div class="col-4">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{% url 'home' %}">
               <img src="{% static 'djangoApp/images/BJJlogo3.png' %}" alt="Logo Image - BJJ Journal" class="img-fluid" role="img">
             </a>
         </div>
