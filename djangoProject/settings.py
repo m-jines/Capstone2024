@@ -130,9 +130,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'  # Added for collecting static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'  # Added for WhiteNoise storage
 
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+#STATICFILES_DIRS = [
+#    os.path.join(BASE_DIR, 'static')
+#]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
