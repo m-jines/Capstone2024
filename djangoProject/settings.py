@@ -29,7 +29,11 @@ SECRET_KEY = 'SECRET_KEY'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'brazilianjiujitsujournal-1996d1e27450.herokuapp.com',
+    '.herokuapp.com',  # Allows any subdomain of herokuapp.com
+]
+
 
 
 # Application definition
