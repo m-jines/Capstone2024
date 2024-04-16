@@ -58,7 +58,7 @@ def home(request):
 @login_required(login_url='loginpage')
 def trainingjournal(request):
    current_user= request.user
-   journalentry = TrainingLogEntry.objects.filter(user=current_user)
+   journalentry = TrainingLogEntry.objects.filter(user=current_user).order_by('Training_Date')
    jFilter = TrainingLogFilter(request.GET, queryset=journalentry)
    journalentry= jFilter.qs
    context = {'jFilter': jFilter, 'journalentry':journalentry}
@@ -67,7 +67,7 @@ def trainingjournal(request):
 @login_required(login_url='loginpage')
 def techniquelibrary(request):
    current_user=request.user
-   techniqueentry = TechniqueLibraryEntry.objects.filter(user=current_user)
+   techniqueentry = TechniqueLibraryEntry.objects.filter(user=current_user).order_by('Technique_Name')
    tFilter = TechniqueLibraryFilter(request.GET, queryset=techniqueentry)
    techniqueentry = tFilter.qs
    context = {'tFilter': tFilter, 'techniqueentry': techniqueentry}
