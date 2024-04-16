@@ -58,7 +58,7 @@ def home(request):
 @login_required(login_url='loginpage')
 def trainingjournal(request):
    current_user= request.user
-   journalentry = TrainingLogEntry.objects.filter(user=current_user).order_by('Training_Date')
+   journalentry = TrainingLogEntry.objects.filter(user=current_user).order_by('-Training_Date')
    jFilter = TrainingLogFilter(request.GET, queryset=journalentry)
    journalentry= jFilter.qs
    context = {'jFilter': jFilter, 'journalentry':journalentry}
