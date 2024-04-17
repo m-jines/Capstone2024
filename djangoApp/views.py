@@ -261,7 +261,7 @@ def deletetechniqueseries(request, pk):
 def stats(request):
     user = request.user  # Get the current user
 
-    # Filter TrainingLogEntry by the current user and aggregate the duration
+    # Filter TrainingLogEntry by the current user and add the duration
     total_duration_minutes = TrainingLogEntry.objects.filter(user=user).aggregate(Sum('Duration'))['Duration__sum'] or 0
     total_hours, total_minutes = divmod(total_duration_minutes, 60)
     total_days, total_hours = divmod(total_hours, 24)
